@@ -66,11 +66,12 @@
     .datepicker {
         display: inline-block !important;
         width: 50%;
+        height: 10vh;
     }
 
     .filter-item {
         padding: 1%;
-        box-sizing: border-box;
+        box-sizing: border-box;;
     }
 
     .filter {
@@ -79,7 +80,7 @@
     }
 
     .status {
-        height: 15vh;
+        height: 10vh;
     }
 
     .filter-clear-text, .filter-clear-button {
