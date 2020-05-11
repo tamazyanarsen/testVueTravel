@@ -1,15 +1,22 @@
 <template>
     <div>
-        <div v-if="errors">Ошибки в полях фильтра:</div>
+        <div v-if="errors">
+            Ошибки в полях фильтра: <br>
+            {{errors}}
+        </div>
         <div class="filter">
             <div class="filter-item datepicker-filter">
                 <h5>Даты</h5>
                 <b-datepicker v-model="date_from"
                               class="datepicker"
-                              placeholder="от"></b-datepicker>
+                              placeholder="от"
+                              :date-format-options="{month: 'numeric'}"
+                              @input="onDateChange"></b-datepicker>
                 <b-datepicker v-model="date_to"
                               class="datepicker"
-                              placeholder="до"></b-datepicker>
+                              placeholder="до"
+                              :date-format-options="{month: 'numeric'}"
+                              @input="onDateChange"></b-datepicker>
             </div>
             <div class="filter-item reservation-status">
                 <h5>Статус брони</h5>
@@ -17,7 +24,8 @@
                           v-model="selectedReservation"
                           :options="selectOptions"></b-select>
             </div>
-            <div class="filter-clear">
+            <div class="filter-clear"
+                 @click="clearFilters">
                 <h5 class="filter-clear-text">Очистить фильтры</h5>
                 <b-btn-close class="filter-clear-button"></b-btn-close>
             </div>
@@ -32,6 +40,39 @@
 <script>
     export default {
         name: "MainFilter",
+        mounted() {
+            this.$emit('clearFilter');
+        },
+        methods: {
+            onDateChange: function () {
+                let date_from, date_to;
+                if (this.date_from) {
+                    const [y, m, d] = this.date_from.split('-');
+                    date_from = new Date(`${m}.${d}.${y}`);
+                } else {
+                    date_from = new Date(`1.1.1970`);
+                }
+                if (this.date_to) {
+                    const [y, m, d] = this.date_to.split('-');
+                    date_to = new Date(`${m}.${d}.${y}`);
+                } else {
+                    date_to = new Date();
+                }
+                if (date_from < date_to) {
+                    this.$emit('dateChange', [date_from, date_to])
+                    this.errors = null;
+                } else {
+                    this.errors = 'Выбрана неправильная дата';
+                }
+            },
+            clearFilters() {
+                this.selectedReservation = null;
+                this.date_from = null;
+                this.date_to = null;
+                this.errors = null;
+                this.$emit('clearFilter');
+            }
+        },
         data: function () {
             return {
                 errors: null,

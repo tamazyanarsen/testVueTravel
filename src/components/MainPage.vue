@@ -1,6 +1,6 @@
 <template>
     <div>
-        <main-filter></main-filter>
+        <main-filter @clearFilter="clearFilter"></main-filter>
         <div class="data-table">
             <div class="data-grid-caption">
                 <div class="sort-column">№ брони</div>
@@ -15,7 +15,7 @@
                 <div class="sort-column">Комиссия</div>
             </div>
             <div class="data-grid"
-                 v-for="item in data"
+                 v-for="item in currentData"
                  :key="item.id">
                 <div>{{item.number}}</div>
                 <div style="grid-column: span 2">
@@ -35,7 +35,9 @@
                 </div>
                 <div>{{item.commission}}</div>
                 <div style="grid-column: span 11">
-                    <b-button disabled :variant="getItemStatusVariant(item.status)">{{item.status}}</b-button>
+                    <b-button disabled
+                              :variant="getItemStatusVariant(item.status)">{{item.status}}
+                    </b-button>
                 </div>
             </div>
         </div>
@@ -51,10 +53,14 @@
         components: { MainFilter },
         data: function () {
             return {
-                data: data
+                items: data,
+                currentData: []
             };
         },
         methods: {
+            clearFilter() {
+                this.currentData = this.items.slice();
+            },
             getItemStatusVariant(status) {
                 switch (status) {
                     case 'новая':
