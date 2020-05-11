@@ -3,14 +3,16 @@
         <main-filter></main-filter>
         <div class="data-table">
             <div class="data-grid-caption">
-                <div>№ брони</div>
+                <div class="sort-column">№ брони</div>
                 <div style="grid-column: span 2">Гость</div>
-                <div>Заезд</div>
-                <div>Выезд</div>
+                <div class="sort-column">Заезд</div>
+                <div class="sort-column">Выезд</div>
                 <div style="grid-column: span 2">Номер/Путевка</div>
-                <div style="grid-column: span 2">Когда забронировано</div>
-                <div>Стоимость</div>
-                <div>Комиссия</div>
+                <div class="sort-column"
+                     style="grid-column: span 2">Когда забронировано
+                </div>
+                <div class="sort-column">Стоимость</div>
+                <div class="sort-column">Комиссия</div>
             </div>
             <div class="data-grid"
                  v-for="item in data"
@@ -33,7 +35,7 @@
                 </div>
                 <div>{{item.commission}}</div>
                 <div style="grid-column: span 11">
-                    <b-button :variant="getItemStatusVariant(item.status)">{{item.status}}</b-button>
+                    <b-button disabled :variant="getItemStatusVariant(item.status)">{{item.status}}</b-button>
                 </div>
             </div>
         </div>
@@ -53,7 +55,7 @@
             };
         },
         methods: {
-            getItemStatusVariant(status){
+            getItemStatusVariant(status) {
                 switch (status) {
                     case 'новая':
                         return 'warning';
@@ -75,11 +77,16 @@
     }
 </script>
 
-<style scoped>
+<style scoped
+       lang="scss">
     .data-grid-caption, .data-grid {
         display: grid;
         grid-template-columns: repeat(11, 1fr);
         padding: 1%;
+
+        div {
+            padding: 1%;
+        }
     }
 
     .data-grid:hover {
@@ -89,5 +96,9 @@
 
     .item-stock {
         color: green;
+    }
+
+    .sort-column {
+        cursor: pointer;
     }
 </style>
