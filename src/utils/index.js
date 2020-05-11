@@ -3,8 +3,8 @@ export function getRandom(min, max) {
 }
 
 export function getRandomDates() {
-    return [new Date(`${getRandom(5, 9)}.${getRandom(1, 30)}.2020`),
-        new Date(`${getRandom(4, 6)}.${getRandom(1, 30)}.2020`)].sort((a, b) => {
+    return [new Date(2020, getRandom(5, 9), getRandom(1, 30)),
+        new Date(2020, getRandom(5, 9), getRandom(1, 30))].sort((a, b) => {
         return a < b ? -1
             : a === b ? 0 : 1
     });

@@ -48,13 +48,13 @@
                 let date_from, date_to;
                 if (this.date_from) {
                     const [y, m, d] = this.date_from.split('-');
-                    date_from = new Date(`${m}.${d}.${y}`);
+                    date_from = new Date(y, m - 1, d);
                 } else {
-                    date_from = new Date(`1.1.1970`);
+                    date_from = new Date(1970, 0, 1);
                 }
                 if (this.date_to) {
                     const [y, m, d] = this.date_to.split('-');
-                    date_to = new Date(`${m}.${d}.${y}`);
+                    date_to = new Date(y, m - 1, d);
                 } else {
                     date_to = new Date();
                 }

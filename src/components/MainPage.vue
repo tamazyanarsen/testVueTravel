@@ -47,11 +47,11 @@
 
 <script>
     import MainFilter from "./MainFilter";
-    import { data } from "../state";
+    import {data} from "../state";
 
     export default {
         name: 'MainPage',
-        components: { MainFilter },
+        components: {MainFilter},
         data: function () {
             return {
                 items: data,
@@ -60,7 +60,7 @@
         },
         methods: {
             dateChange(dates) {
-                this.currentData = this.items.filter(e => e.date_reservation >= dates[0] && e.date_reservation <= dates[1])
+                this.currentData = this.items.filter(e => console.log('date change', e.date_reservation) || e.date_reservation >= dates[0] && e.date_reservation <= dates[1])
                     .map(e => {
                         e.date = e.date.map(_ => _.toISOString().split('T')[0].split('-').reverse().join('.'));
                         e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
@@ -69,7 +69,7 @@
             },
             clearFilter() {
                 this.currentData = this.items.map(e => {
-                    e.date = e.date.map(_ => console.log(_)||_.toISOString().split('T')[0].split('-').reverse().join('.'));
+                    e.date = e.date.map(_ => console.log('clear', _) || _.toISOString().split('T')[0].split('-').reverse().join('.'));
                     e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
                     return e;
                 });
