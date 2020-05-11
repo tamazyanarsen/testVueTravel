@@ -7,7 +7,7 @@ export function getRandomDates() {
         new Date(`${getRandom(4, 6)}.${getRandom(1, 30)}.2020`)].sort((a, b) => {
         return a < b ? -1
             : a === b ? 0 : 1
-    }).map(e => e.toISOString().split('T')[0].split('-').reverse().join('.'));
+    });
 }
 
 export function getRandomStatus() {

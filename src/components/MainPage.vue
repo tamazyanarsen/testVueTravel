@@ -1,6 +1,7 @@
 <template>
     <div>
-        <main-filter @clearFilter="clearFilter"></main-filter>
+        <main-filter @clearFilter="clearFilter"
+                     @dateChange="dateChange"></main-filter>
         <div class="data-table">
             <div class="data-grid-caption">
                 <div class="sort-column">№ брони</div>
@@ -58,8 +59,20 @@
             };
         },
         methods: {
+            dateChange(dates) {
+                this.currentData = this.items.filter(e => e.date_reservation >= dates[0] && e.date_reservation <= dates[1])
+                    .map(e => {
+                        e.date = e.date.map(_ => _.toISOString().split('T')[0].split('-').reverse().join('.'));
+                        e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
+                        return e;
+                    });
+            },
             clearFilter() {
-                this.currentData = this.items.slice();
+                this.currentData = this.items.map(e => {
+                    e.date = e.date.map(_ => console.log(_)||_.toISOString().split('T')[0].split('-').reverse().join('.'));
+                    e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
+                    return e;
+                });
             },
             getItemStatusVariant(status) {
                 switch (status) {
