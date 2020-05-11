@@ -21,6 +21,7 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         margin-top: 60px;
-        margin-left: 15%;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 </style>

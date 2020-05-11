@@ -2,20 +2,23 @@
     <div class="filter">
         <div class="filter-item datepicker-filter">
             <h5>Даты</h5>
-            <b-datepicker class="datepicker" placeholder="от"></b-datepicker>
-            <b-form-datepicker class="datepicker" placeholder="до"></b-form-datepicker>
+            <b-datepicker class="datepicker"
+                          placeholder="от"></b-datepicker>
+            <b-form-datepicker class="datepicker"
+                               placeholder="до"></b-form-datepicker>
         </div>
         <div class="filter-item reservation-status">
             <h5>Статус брони</h5>
-            <b-select class="status">
-                <b-select-option v-for="option in selectOptions" :key="option.id" :value="option.id">{{option.value}}
-                </b-select-option>
-            </b-select>
+            <b-select class="status" v-model="selectedReservation" :options="selectOptions"></b-select>
         </div>
         <div class="filter-clear">
             <h5 class="filter-clear-text">Очистить фильтры</h5>
             <b-btn-close class="filter-clear-button"></b-btn-close>
         </div>
+        <div></div>
+        <b-button variant="light"
+                  class="button-download">Загрузить xlsx
+        </b-button>
     </div>
 </template>
 
@@ -24,38 +27,43 @@
         name: "MainFilter",
         data: function () {
             return {
+                selectedReservation: null,
                 selectOptions: [
                     {
-                        id: 1,
-                        value: 'Все бронирования'
+                        value: null,
+                        text: 'Когда забронировано'
                     },
                     {
-                        id: 2,
-                        value: 'Новые бронирования'
+                        value: 1,
+                        text: 'Все бронирования'
                     },
                     {
-                        id: 3,
-                        value: 'Подтвержденные'
+                        value: 2,
+                        text: 'Новые бронирования'
                     },
                     {
-                        id: 4,
-                        value: 'Отмененные'
+                        value: 3,
+                        text: 'Подтвержденные'
                     },
                     {
-                        id: 5,
-                        value: 'Оплачено'
+                        value: 4,
+                        text: 'Отмененные'
                     },
                     {
-                        id: 6,
-                        value: 'Не оплачено'
+                        value: 5,
+                        text: 'Оплачено'
                     },
                     {
-                        id: 7,
-                        value: 'Заезд'
+                        value: 6,
+                        text: 'Не оплачено'
                     },
                     {
-                        id: 8,
-                        value: 'Не заезд'
+                        value: 7,
+                        text: 'Заезд'
+                    },
+                    {
+                        value: 8,
+                        text: 'Не заезд'
                     }]
             };
         }
@@ -66,17 +74,17 @@
     .datepicker {
         display: inline-block !important;
         width: 50%;
-        height: 10vh;
+        height: 10vh !important;
     }
 
     .filter-item {
         padding: 1%;
-        box-sizing: border-box;;
+        box-sizing: border-box;
     }
 
     .filter {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(5, 1fr);
     }
 
     .status {
@@ -90,5 +98,18 @@
 
     .filter-clear {
         padding: 10%;
+    }
+
+    .button-download:hover {
+        background: orange;
+        border: none;
+        outline: none;
+        color: aliceblue;
+    }
+
+    .button-download{
+        background: none;
+        border-color: orange;
+        color: orange;
     }
 </style>
