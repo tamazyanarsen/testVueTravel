@@ -22,12 +22,14 @@
                 <h5>Статус брони</h5>
                 <b-select class="status"
                           v-model="selectedReservation"
-                          :options="selectOptions"></b-select>
+                          :options="selectOptions"
+                          @input="onChangeStatus"></b-select>
             </div>
-            <div class="filter-clear"
-                 @click="clearFilters">
-                <h5 class="filter-clear-text">Очистить фильтры</h5>
-                <b-btn-close class="filter-clear-button"></b-btn-close>
+            <div class="filter-clear">
+                <h5 class="filter-clear-text"
+                    @click="clearFilters">Очистить фильтры</h5>
+                <b-btn-close class="filter-clear-button"
+                             @click="clearFilters"></b-btn-close>
             </div>
             <div></div>
             <b-button variant="light"
@@ -41,10 +43,13 @@
     export default {
         name: "MainFilter",
         mounted() {
-            this.$emit('clearFilter');
+            this.clearFilters();
         },
         methods: {
-            onDateChange: function () {
+            onChangeStatus() {
+                this.$emit('changeStatus', this.selectedReservation);
+            },
+            onDateChange() {
                 let date_from, date_to;
                 if (this.date_from) {
                     const [y, m, d] = this.date_from.split('-');
@@ -56,7 +61,8 @@
                     const [y, m, d] = this.date_to.split('-');
                     date_to = new Date(y, m - 1, d);
                 } else {
-                    date_to = new Date();
+                    const t = new Date();
+                    date_to = new Date(t.getFullYear() + 1, t.getMonth(), t.getDate());
                 }
                 if (date_from < date_to) {
                     this.$emit('dateChange', [date_from, date_to])
@@ -85,35 +91,35 @@
                         text: 'Когда забронировано'
                     },
                     {
-                        value: 1,
+                        value: 'all',
                         text: 'Все бронирования'
                     },
                     {
-                        value: 2,
+                        value: 'новая',
                         text: 'Новые бронирования'
                     },
                     {
-                        value: 3,
+                        value: 'подтверждено',
                         text: 'Подтвержденные'
                     },
                     {
-                        value: 4,
+                        value: 'отмена',
                         text: 'Отмененные'
                     },
                     {
-                        value: 5,
+                        value: 'оплачено',
                         text: 'Оплачено'
                     },
                     {
-                        value: 6,
+                        value: 'не оплачено',
                         text: 'Не оплачено'
                     },
                     {
-                        value: 7,
+                        value: 'заезд',
                         text: 'Заезд'
                     },
                     {
-                        value: 8,
+                        value: 'незаезд',
                         text: 'Не заезд'
                     }]
             };

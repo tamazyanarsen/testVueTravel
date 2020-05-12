@@ -1,7 +1,8 @@
 <template>
     <div>
         <main-filter @clearFilter="clearFilter"
-                     @dateChange="dateChange"></main-filter>
+                     @dateChange="dateChange"
+                     @changeStatus="changeStatus"></main-filter>
         <div class="data-table">
             <div class="data-grid-caption">
                 <div class="sort-column">№ брони</div>
@@ -47,31 +48,56 @@
 
 <script>
     import MainFilter from "./MainFilter";
-    import {data} from "../state";
+    import { data } from "../state";
 
     export default {
         name: 'MainPage',
-        components: {MainFilter},
+        components: { MainFilter },
         data: function () {
             return {
                 items: data,
-                currentData: []
+                currentData: [],
+                filterStatus: 'all',
+                filterDates: [new Date(1970, 0, 1),
+                    new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())]
             };
         },
         methods: {
+            changeStatus(status) {
+                if (!status) {
+                    return;
+                }
+                const dates = this.filterDates;
+                this.filterStatus = status;
+                let items = this.items.slice();
+                if (dates.length) {
+                    items = this.items.filter(e => e.date_reservation >= dates[0] && e.date_reservation <= dates[1]);
+                }
+                if (this.filterStatus !== 'all') {
+                    items = items.filter(e => e.status === this.filterStatus);
+                }
+                this.currentData = this.formatData(items);
+            },
             dateChange(dates) {
-                this.currentData = this.items.filter(e => console.log('date change', e.date_reservation) || e.date_reservation >= dates[0] && e.date_reservation <= dates[1])
-                    .map(e => {
-                        e.date = e.date.map(_ => _.toISOString().split('T')[0].split('-').reverse().join('.'));
-                        e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
-                        return e;
-                    });
+                this.filterDates = dates;
+                let items = this.items.slice();
+                if (this.filterStatus !== 'all') {
+                    items = this.items.filter(e => e.status === this.filterStatus);
+                }
+                this.currentData = this.formatData(items.filter(e => e.date_reservation >= dates[0] && e.date_reservation <= dates[1]));
             },
             clearFilter() {
-                this.currentData = this.items.map(e => {
-                    e.date = e.date.map(_ => console.log('clear', _) || _.toISOString().split('T')[0].split('-').reverse().join('.'));
-                    e.date_reservation = e.date_reservation.toISOString().split('T')[0].split('-').reverse().join('.');
-                    return e;
+                this.filterDates = [new Date(1970, 0, 1),
+                    new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())];
+                this.filterStatus = 'all';
+                this.currentData = this.formatData(this.items);
+            },
+            formatData(items) {
+                return items.map(e => {
+                    const newObject = JSON.parse(JSON.stringify(e));
+                    newObject.date = newObject.date.map(_ => _.split('T')[0].split('-').reverse().join('.'));
+                    newObject.date_reservation = newObject.date_reservation.split('T')[0].split('-').reverse().join('.');
+                    return newObject;
                 });
             },
             getItemStatusVariant(status) {
