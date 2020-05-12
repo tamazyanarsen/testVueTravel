@@ -5,16 +5,27 @@
                      @changeStatus="changeStatus"></main-filter>
         <div class="data-table">
             <div class="data-grid-caption">
-                <div class="sort-column">№ брони</div>
+                <div class="sort-column"
+                     @click="sort('number')">№ брони
+                </div>
                 <div style="grid-column: span 2">Гость</div>
-                <div class="sort-column">Заезд</div>
-                <div class="sort-column">Выезд</div>
+                <div class="sort-column"
+                     @click="sort('date_from')">Заезд
+                </div>
+                <div class="sort-column"
+                     @click="sort('date_to')">Выезд
+                </div>
                 <div style="grid-column: span 2">Номер/Путевка</div>
                 <div class="sort-column"
-                     style="grid-column: span 2">Когда забронировано
+                     style="grid-column: span 2"
+                     @click="sort('date_reservation')">Когда забронировано
                 </div>
-                <div class="sort-column">Стоимость</div>
-                <div class="sort-column">Комиссия</div>
+                <div class="sort-column"
+                     @click="sort('price')">Стоимость
+                </div>
+                <div class="sort-column"
+                     @click="sort('commission')">Комиссия
+                </div>
             </div>
             <div class="data-grid"
                  v-for="item in currentData"
@@ -59,10 +70,68 @@
                 currentData: [],
                 filterStatus: 'all',
                 filterDates: [new Date(1970, 0, 1),
-                    new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())]
+                    new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())],
+                sorting: {
+                    number: 'asc',
+                    date_from: 'asc',
+                    date_to: 'asc',
+                    date_reservation: 'asc',
+                    price: 'asc',
+                    commission: 'asc'
+                }
             };
         },
         methods: {
+            changeSortDirection(field, arr, fn) {
+                if (this.sorting[field] === 'asc') {
+                    this.sorting[field] = 'desc';
+                    return arr.sort(fn).reverse();
+                } else {
+                    this.sorting[field] = 'asc';
+                    return arr.sort(fn);
+                }
+            },
+            sort(field) {
+                let tFunc;
+                switch (field) {
+                    case 'number':
+                        tFunc = a => +a[field];
+                        break;
+                    case 'date_from':
+                        tFunc = a => new Date(...a.date[0].split('.').reverse().map(e => +e));
+                        break;
+                    case 'date_to':
+                        tFunc = a => new Date(...a.date[1].split('.').reverse().map(e => +e));
+                        break;
+                    case 'date_reservation':
+                        tFunc = a => new Date(...a.date_reservation.split('.').reverse().map(e => +e));
+                        break;
+                    case 'price':
+                        tFunc = a => +a[field];
+                        break;
+                    case 'commission':
+                        tFunc = a => +a[field];
+                        break;
+                }
+
+                function getCompareFn(tFunc) {
+                    return (a, b) => {
+                        const t1 = tFunc(a);
+                        const t2 = tFunc(b);
+                        if (t1 < t2) {
+                            return -1;
+                        }
+                        if (t1 === t2) {
+                            return 0;
+                        }
+                        if (t1 > t2) {
+                            return 1;
+                        }
+                    };
+                }
+
+                this.currentData = this.changeSortDirection(field, this.currentData, getCompareFn(tFunc));
+            },
             changeStatus(status) {
                 if (!status) {
                     return;
