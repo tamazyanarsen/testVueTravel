@@ -47,3 +47,9 @@ export const data = [
         status: getRandomStatus()
     }
 ];
+
+export const hotels = [
+    {name: 'Yalta Intourist', location: 'Ялта, Крым', number: 'ND-4567'},
+    {name: 'Ореанда Премьер Отель', location: 'Бахчисарай, Крым', number: 'ND-4567'},
+    {name: 'Ореанда Премьер Отель', location: 'Бахчисарай, Крым', number: 'ND-4567'}
+];
