@@ -49,7 +49,25 @@ export const data = [
 ];
 
 export const hotels = [
-    {name: 'Yalta Intourist', location: 'Ялта, Крым', number: 'ND-4567'},
-    {name: 'Ореанда Премьер Отель', location: 'Бахчисарай, Крым', number: 'ND-4567'},
-    {name: 'Ореанда Премьер Отель', location: 'Бахчисарай, Крым', number: 'ND-4567'}
+    {
+        id: new Date().getTime() + getRandom(-(10 ** 6), 10 ** 6),
+        name: 'Yalta Intourist',
+        location: 'Ялта, Крым',
+        number: 'ND-4567',
+        img: './static/2.jpg'
+    },
+    {
+        id: new Date().getTime() + getRandom(-(10 ** 6), 10 ** 6),
+        name: 'Ореанда Премьер Отель',
+        location: 'Бахчисарай, Крым',
+        number: 'ND-4567',
+        img: './static/2.jpg'
+    },
+    {
+        id: new Date().getTime() + getRandom(-(10 ** 6), 10 ** 6),
+        name: 'Ореанда Премьер Отель',
+        location: 'Бахчисарай, Крым',
+        number: 'ND-4567',
+        img: './static/2.jpg'
+    }
 ];

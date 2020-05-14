@@ -2,20 +2,54 @@
     <div>
         <header>
             <div style="padding-bottom: 2%;">
-                <h5 style="display: inline-block">
+                <h4 style="display: inline-block">
                     <b class="logo_name">
                         Крым. Travel
                         <span>Sanatorium</span>
                     </b>
-                </h5>
-                <b-dropdown variant="outline-dark"
-                            :text="`${selectedHotel.name} ${selectedHotel.name}`">
-                    <b-dropdown-item disabled
-                                     class="hotels-dropdown-disabled">Выберите объект для редактирования
-                    </b-dropdown-item>
-                    <b-dropdown-item style="width: 100%">sdfsdlkfjklsdf</b-dropdown-item>
-                    <b-dropdown-item>sdfsdlkfjklsdf</b-dropdown-item>
-                </b-dropdown>
+                </h4>
+                <div class="header-block">
+                    <b-dropdown variant="outline-dark"
+                                no-caret
+                                class="hotels-list"
+                                :text="`${selectedHotel.name} ${selectedHotel.name}`">
+                        <b-dropdown-item disabled
+                                         class="hotels-dropdown-disabled">Выберите объект для редактирования
+                        </b-dropdown-item>
+                        <b-dropdown-item v-for="hotel in hotels"
+                                         :key="hotel.id"
+                                         style="width: 100%">
+                            <div class="hotel-item"
+                                 :class="{'hotel-item-selected': selectedHotel.id === hotel.id}">
+                                <div><img src="../static/2.jpg"
+                                          alt="Изображение объекта"
+                                          width="40"
+                                          height="40"></div>
+                                <div class="hotel-description">
+                                    <div><b>{{hotel.name}}</b></div>
+                                    <div style="display: flex; font-size: .8em">
+                                        <div class="padding1">{{hotel.location}}</div>
+                                        <div class="padding1"
+                                             style="padding-left: 10%; color: #bcbcbc">{{hotel.number}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </b-dropdown-item>
+                    </b-dropdown>
+                    <div class="dropdown-caret">
+                        <svg width="12"
+                             height="12"
+                             viewBox="0 0 12 12"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 4L6 8L10 4"
+                                  stroke="#4A4A4A"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
                 <div style="float: right"
                      class="header-buttons">
                     <div>
@@ -304,6 +338,7 @@
 
     .logo_name {
         letter-spacing: .04em;
+        font-size: 1.4rem;
 
         span {
             color: #feac0d;
@@ -342,6 +377,10 @@
 
     .b-dropdown {
         margin-left: 2%;
+    }
+
+    .padding1 {
+        padding: 1%;
     }
 
     .headerButtonUser__preview {
@@ -391,4 +430,51 @@
             padding: 0;
         }
     }
+
+    .hotels-list {
+        width: 17%;
+
+        .hotel-item-selected {
+            &:before {
+                position: absolute;
+                content: "";
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                height: 100%;
+                background: #feac0d;
+            }
+        }
+
+        .hotel-item {
+            display: flex;
+            padding: 2% 2% 2% 0;
+
+            .hotel-description {
+                padding-left: 5%;
+            }
+        }
+
+        .btn {
+            text-align: left !important;
+        }
+    }
+
+    .header-block {
+        position: relative;
+        display: inline;
+
+        ul {
+            margin: 0
+        }
+
+        .dropdown-caret {
+            position: absolute;
+            left: 90%;
+            top: 0;
+            z-index: 100;
+        }
+    }
+
 </style>
